@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YouTube Autoplay Popup</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #0b0f19;
+      color: white;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+      display: none;
+      z-index: 20;
+    }
+
+    .overlay.show { display: block; }
+
+    .modal {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #111;
+      padding: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      display: none;
+      z-index: 30;
+      width: 80%;
+      max-width: 900px;
+      aspect-ratio: 16/9;
+    }
+
+    .modal.show { display: block; }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(0,0,0,.6);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 36px; height: 36px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome! The YouTube video will pop up automatically.</h1>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="modal" id="modal">
+    <button class="close-btn" id="closeBtn">✕</button>
+    <iframe id="ytplayer"
+      src=""
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+    ></iframe>
+  </div>
+
+  <script>
+    const overlay = document.getElementById("overlay");
+    const modal   = document.getElementById("modal");
+    const yt      = document.getElementById("ytplayer");
+    const closeBtn= document.getElementById("closeBtn");
+
+    // Replace with your YouTube video ID
+    const YT_ID = "9yi3pPVjKYg"; // example
+    // Try autoplay with sound
+    const YT_URL = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&mute=0&playsinline=1&controls=1`;
+
+    function openModal() {
+      yt.src = YT_URL;
+      overlay.classList.add("show");
+      modal.classList.add("show");
+    }
+
+    function closeModal() {
+      yt.src = ""; // stop video
+      overlay.classList.remove("show");
+      modal.classList.remove("show");
+    }
+
+    // Auto open when page loads
+    window.addEventListener("DOMContentLoaded", openModal);
+    closeBtn.addEventListener("click", closeModal);
+    overlay.addEventListener("click", closeModal);
+  </script>
+</body>
+</html>
